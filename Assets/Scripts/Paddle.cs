@@ -1,14 +1,48 @@
+using TMPro;
 using UnityEngine;
 
 public class Paddle : MonoBehaviour
 {
+    [SerializeField] TextMeshPro scoreText;
+
     [SerializeField, Min(0f)]
     float
-        extents = 4f,
-        speed = 10f;
+        minExtents = 4f,
+        maxExtents = 4f,
+        speed = 10f,
+        maxTargetingBias = 0.75f;
 
-    [SerializeField]
-    bool isAI;
+    [SerializeField] bool isAI;
+
+    int score;
+
+    float extents, targetingBias;
+
+    void Awake()
+    {
+        SetScore(0);
+    }
+
+    public void StartNewGame()
+    {
+        SetScore(0);
+        ChangeTargetingBias();
+    }
+
+    public bool HitBall(float ballX, float ballExtents, out float hitFactor)
+    {
+        ChangeTargetingBias();
+
+        hitFactor =
+            (ballX - transform.localPosition.x) /
+            (extents + ballExtents);
+        return -1f <= hitFactor && hitFactor <= 1f;
+    }
+    public bool ScorePoint(int pointsToWin)
+    {
+        SetScore(score + 1, pointsToWin);
+        return score >= pointsToWin;
+    }
 
     public void Move(float target, float arenaExtents)
     {
@@ -21,6 +55,8 @@ public class Paddle : MonoBehaviour
 
     float AdjustByAI(float x, float target)
     {
+        target += targetingBias * extents;
+
         if (x < target)
         {
             return Mathf.Min(x + speed * Time.deltaTime, target);
@@ -42,12 +78,21 @@ public class Paddle : MonoBehaviour
         }
         return x;
     }
-
-    public bool HitBall(float ballX, float ballExtents, out float hitFactor)
+    void SetScore(int newScore, float pointsToWin = 1000f)
     {
-        hitFactor =
-            (ballX - transform.localPosition.x) /
-            (extents + ballExtents);
-        return -1f <= hitFactor && hitFactor <= 1f;
+        score = newScore;
+        scoreText.SetText("{0}", newScore);
+        SetExtents(Mathf.Lerp(maxExtents, minExtents, newScore / (pointsToWin - 1f)));
+    }
+
+    void ChangeTargetingBias() =>
+        targetingBias = Random.Range(-maxTargetingBias, maxTargetingBias);
+
+    void SetExtents(float newExtents)
+    {
+        extents = newExtents;
+        Vector3 s = transform.localScale;
+        s.x = 2f * newExtents;
+        transform.localScale = s;
     }
 }
