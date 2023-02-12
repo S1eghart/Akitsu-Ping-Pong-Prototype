@@ -3,13 +3,26 @@ using UnityEngine;
 
 public class GameLogic : MonoBehaviour
 {
-    [SerializeField] Ball ball;
-    [SerializeField] Paddle bottomPaddle, topPaddle;
-    [SerializeField, Min(0f)] Vector2 arenaExtents = new Vector2(10f, 10f);
-    [SerializeField, Min(2)] int pointsToWin = 3;
-    [SerializeField] TextMeshPro countdownText;
-    [SerializeField, Min(1f)] float newGameDelay = 3f;
-    [SerializeField] LivelyCamera livelyCamera;
+    [SerializeField]
+    Ball ball;
+
+    [SerializeField]
+    Paddle bottomPaddle, topPaddle;
+
+    [SerializeField, Min(0f)]
+    Vector2 arenaExtents = new Vector2(10f, 10f);
+
+    [SerializeField, Min(2)]
+    int pointsToWin = 3;
+
+    [SerializeField]
+    TextMeshPro countdownText;
+
+    [SerializeField, Min(1f)]
+    float newGameDelay = 3f;
+
+    [SerializeField]
+    LivelyCamera livelyCamera;
 
     float countdownUntilNewGame;
 
@@ -77,6 +90,7 @@ public class GameLogic : MonoBehaviour
             ball.BounceX(xExtents);
         }
     }
+
     void BounceYIfNeeded()
     {
         float yExtents = arenaExtents.y - ball.Extents;
@@ -121,6 +135,4 @@ public class GameLogic : MonoBehaviour
         countdownText.gameObject.SetActive(true);
         ball.EndGame();
     }
-
-
 }

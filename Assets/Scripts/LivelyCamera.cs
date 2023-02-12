@@ -11,9 +11,10 @@ public class LivelyCamera : MonoBehaviour
         maxDeltaTime = 1f / 60f;
 
     Vector3 anchorPosition, velocity;
-    public void JostleY() => velocity.y += jostleStrength;
 
     void Awake() => anchorPosition = transform.localPosition;
+
+    public void JostleY() => velocity.y += jostleStrength;
 
     public void PushXZ(Vector2 impulse)
     {
@@ -36,7 +37,7 @@ public class LivelyCamera : MonoBehaviour
     {
         Vector3 displacement = anchorPosition - transform.localPosition;
         Vector3 acceleration = springStrength * displacement - dampingStrength * velocity;
-        velocity += acceleration * Time.deltaTime;
-        transform.localPosition += velocity * Time.deltaTime;
+        velocity += acceleration * dt;
+        transform.localPosition += velocity * dt;
     }
 }

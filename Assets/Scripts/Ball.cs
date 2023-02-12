@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Ball : MonoBehaviour
 {
@@ -9,10 +10,12 @@ public class Ball : MonoBehaviour
         constantYSpeed = 10f,
         extents = 0.5f;
 
-    [SerializeField] ParticleSystem bounceParticleSystem, startParticleSystem, trailParticleSystem;
+    [SerializeField]
+    ParticleSystem bounceParticleSystem, startParticleSystem, trailParticleSystem;
 
     [SerializeField]
-    int bounceParticleEmission = 20,
+    int
+        bounceParticleEmission = 20,
         startParticleEmission = 100;
 
     Vector2 position, velocity;
@@ -32,9 +35,7 @@ public class Ball : MonoBehaviour
         velocity.x = Random.Range(-maxStartXSpeed, maxStartXSpeed);
         velocity.y = -constantYSpeed;
         gameObject.SetActive(true);
-
         startParticleSystem.Emit(startParticleEmission);
-
         SetTrailEmission(true);
         trailParticleSystem.Play();
     }
@@ -94,5 +95,4 @@ public class Ball : MonoBehaviour
         ParticleSystem.EmissionModule emission = trailParticleSystem.emission;
         emission.enabled = enabled;
     }
-
 }
