@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class GameLogic : MonoBehaviour
 {
+
+    //Todo Publish the Game on Itch.io
+
     [SerializeField]
     Ball ball;
 
